@@ -1,0 +1,137 @@
+.calbutton{
+background-image: url('../images/aquaspy.png');
+background-repeat: no-repeat;
+background-size: 48px 32px;
+width:48px;
+height:32px;
+padding:0px;
+margin:0px;
+cursor:pointer;
+}
+.calbutton2{
+background-image: url('../images/redspy.png');
+background-repeat: no-repeat;
+background-size: 48px 32px;
+width:48px;
+height:32px;
+padding:0px;
+margin:0px;
+cursor:pointer;
+}
+.calbutton3{
+background-image: url('../images/greyspy.png');
+background-repeat: no-repeat;
+background-size:48px 32px;
+width:48px;
+height:32px;
+padding:0px;
+margin:0px;
+cursor:pointer;
+}
+.calbutton4{
+background-image: url('../images/yellowspy.png');
+background-repeat: no-repeat;
+background-size:48px 32px;
+width:48px;
+height:32px;
+padding:0px;
+margin:0px;
+cursor:pointer;
+}
+
+
+.calbuttontext{
+color:white;
+font-size:20px;
+font-family: tahoma;
+vertical-align: -40%;
+}
+.calbuttontext2{
+color:white;
+font-size:24px;
+font-family: tahoma;
+
+}
+.calbuttontext4{
+color:white;
+font-size:14px;
+font-family: tahoma;
+vertical-align: -40%;
+}
+
+.calculatortext{
+  color:black;
+  font-size:24px;
+  font-family: times new roman;
+  white-space: nowrap;
+  padding-left:5px;
+}
+body {
+font-size:10pt;
+}
+input.advanced {
+font-size:9pt;
+width:.75cm;
+padding:0;
+margin:0;
+}
+input.clear, input.number, input.operand, input.equal, input.other {
+font-size:15pt;
+}
+input.clear, input.number, input.operand, input.equal, input.other {
+width:1cm;
+font-weight:bold;
+padding:2px;
+}
+input.keyshortcut {
+background-color:beige;
+color:beige;
+text-decoration:none;
+border:none;
+}
+input.clear {
+background-color:#aa2222;
+border-color:#aa2222;
+color:white;
+}
+input.number {
+background-color:#CCaa99;
+border-color:#CCaa99;
+color:black;
+}
+input.operand {
+background-color:#aaaacc;
+border-color:#aaaacc;
+color:black;
+}
+input.equal {
+background-color:#444444;
+border-color:#444444;
+color:white;
+}
+input.other {
+background-color:#9ac693;
+border-color:#9ac693;
+color:black;
+}
+input.advanced {
+background-color:lightgray;
+border-color:lightgray;
+color:black;
+}
+input.line {
+background-color:#cccc99;
+border-color:#cccc99;
+font-size:15pt;
+font-weight:bold;
+width:100%;
+}
+select {
+background-color:#cccccc;
+border-color:#cccccc;
+color:black;
+}
+.minifont{
+font-size:1px;
+}
+
