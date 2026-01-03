@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>BabaCalc Scientific Calculator</title>
+<meta charset='utf-8' />
+<meta name="description" content="Javascript calculator with calculation history, math functions, and scientific notation.">
+<meta name="keywords" content="babacalc, calculator, calc, calculate, calculator, scientific calculator, scientific notation calculator, javascript calculator, java script calculator, freeware calculator, free calculator, online calculator, calculater">
+<link rel="shortcut icon" href="images/calc.ico" type="image/x-icon">
+<meta name=viewport content="width=device-width, initial-scale=1">
+<!--
+
+   *  babacalc.html v2.1.1
+   *  Copyright (c) 2025 Chris Tomlinson<chris@babaviva.net>
+   *  MIT Licence
+   *  Includes decimal.js by Michael Mclaughlin <M8ch88l@gmail.com>
+   *  https://github.com/MikeMcl/decimal.js
+   *  MIT Licence
+-->
+<link rel='stylesheet' href='css/babacalc.css' type='text/css' />
+<script src='javascript/decimal.js'></script>
+<script src='javascript/babacalc.js'></script>
+<script>
+//alert(screen.height);
+</script>
+</head>
+<body  id="mainbody" style="margin:0px;" oncontextmenu="return false" onload="load_calc();setTimeout(function(){clear_calc()},500);">
+<div id="hidecontain" style = "position: fixed; left:-5000px; top:0px; width: 230px; background-color: yellow;">
+<form name=calculator onSubmit="do_calculation();return false;">
+<input class=line type=text name="line" onChange="line_change();">
+<br>
+<table summary="Calculator"><tr><td valign=top>
+</td><td valign=top>
+<p><small>Display:</small><br>
+<select name=display class=display onChange="display_result();save_calc();" title="(Alt-d)">
+<option selected>Decimal (Mixed Notation)
+<option>Decimal (Scientific Notation)
+</select></p>
+<p><select name=history class=history onChange="if(this.selectedIndex>0)set_calc(this.options[this.selectedIndex].text);" title="View previous entries (Alt-h)">
+<option>History:
+<option><option><option><option><option><option><option><option><option>
+<option><option><option><option><option><option><option><option><option><option>
+</select></p>
+
+
+</td></tr></table>
+</form>
+
+<div style="height:1in;"></div>
+</div> <!-- end of hidecontain div  DO NOT REMOVE Hidden but essential-->
+<div id="specialchars" style="position:fixed; top:0px; left:-5000px;">
++-&times;&divide;&sup2;&sup3;&radic;&#8731;&sup1;&pi;0123456789
+</div>
+<div id="calculouter" style="position:fixed; top:7px; left:0px; background-color:#DDDDDD; width:375px; height: 300px; border:3px solid rgb(57,126,124); border-radius:5px; padding:5px; overflow-x:hidden;" onmouseup="refocus(event);"  onkeydown="keycheck(event);">
+<table>
+<tr>
+<td colspan="7" height="40px">
+<div id="cdisplay" contenteditable="true" inputmode="none" class="calculatortext" style="height:35px; width:360px; background-color:white; border: 3px solid black; border-radius:10px; overflow-x:hidden;" ></div>
+
+</td>
+</tr>
+<tr>
+<td colspan="4">
+
+</td>
+<td>
+<div  class="calbutton2" onclick="delitem(event);">
+<center>
+<img src="images/undo.png"/>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton2" onclick="restoreitem(event);">
+<center>
+<img src="images/redo.png"/>
+</center>
+</div>
+</td>
+
+<td>
+<div  class="calbutton2"  onclick="clear_calc();">
+<center>
+<span class="calbuttontext">AC</span>
+</center>
+</div>
+</td>
+
+</tr>
+<tr>
+<td>
+<div  class="calbutton" onmousedown="pasteHtmlAtCaret(ansext.trim()+'<sup name=\'pwn\'><span>2</span></sup>&nbsp;',event);">
+<center>
+<span class="calbuttontext">x<sup>2</sup></span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton" onmousedown="pasteHtmlAtCaret(ansext.trim()+'<sup name=\'pwn\'><span>&nbsp;3</span></sup>&nbsp;',event);">
+<center>
+<span class="calbuttontext">x<sup>3</sup></span>
+</center>
+</div>
+</td>
+<td height="34px">
+<div  id="topbut1" class="calbutton" style="position:relative; top:0px; left:0px; height:32px; visibility:visible;" onmousedown="pasteHtmlAtCaret(ansext.trim()+'<sup name=\'pwn\'><span>&nbsp;-1</span></sup>&nbsp;',event);">
+<center>
+<span class="calbuttontext">x<sup>-1</sup></span>
+</center>
+</div>
+<div id="botbut1" class="calbutton4"  style="position:relative; top: 0px; left:0px; height:1px; visibility:hidden;" onmousedown="pasteHtmlAtCaret('round(',event);">
+<center>
+<span class="calbuttontext4">round</span>
+</center>
+</div>
+</td>
+<td>
+ <div id="topbut2" class="calbutton" style="position:relative; top:0px; left:0px; height:32px; visibility:visible;" onmousedown="pasteHtmlAtCaret(ansext.trim()+'<sup name=\'pwn\'>&nbsp;</sup>&nbsp;',event);  disp=document.getElementById('cdisplay'); SetCaretPosition(disp,  disp.innerText.length-1)">
+  <center>
+   <span class="calbuttontext">x<sup>n</sup></span>
+  </center>
+ </div>
+<div id="botbut2" class="calbutton4"  style="position:relative; top: 0px; left:0px; height:1px; visibility:hidden;" onmousedown="pasteHtmlAtCaret('ceil(',event);">
+<center>
+<span class="calbuttontext4">ceil</span>
+</center>
+</div>
+</td>
+
+<td>
+<div id="topbut3"  class="calbutton" style="position:relative; top:0px; left:0px; height:32px; visibility:visible;" onmousedown="pasteHtmlAtCaret('<span>sin(</span>',event);">
+<center>
+<span class="calbuttontext">sin</span>
+</center>
+</div>
+<div id="botbut3" class="calbutton4"  style="position:relative; top: 0px; left:0px; height:1px; visibility:hidden;" onmousedown="pasteHtmlAtCaret('floor(',event);">
+<center>
+<span class="calbuttontext4">floor</span>
+</center>
+</div>
+
+</td>
+<td>
+<div id="topbut4" class="calbutton" style="position:relative; top:0px; left:0px; height:32px; visibility:visible;" onmousedown="pasteHtmlAtCaret('<span>cos(</span>',event);">
+<center>
+<span class="calbuttontext">cos</span>
+</center>
+</div>
+<div id="botbut4" class="calbutton4"  style="position:relative; top: 0px; left:0px; height:1px; visibility:hidden;" onmousedown="pasteHtmlAtCaret('random()',event);">
+<center>
+<span class="calbuttontext4">random</span>
+</center>
+</div>
+
+</td>
+<td>
+<div id="topbut5" class="calbutton"  style="position:relative; top:0px; left:0px; height:32px; visibility:visible;" onmousedown="pasteHtmlAtCaret('<span>tan(</span>',event);">
+<center>
+<span class="calbuttontext">tan</span>
+</center>
+</div>
+<div id="botbut5" class="calbutton4"  style="position:relative; top: 0px; left:0px; height:1px; visibility:hidden;" onmousedown="pasteHtmlAtCaret('log(',event);">
+<center>
+<span class="calbuttontext4">log</span>
+</center>
+</div>
+
+</td>
+</tr>
+<tr>
+<td>
+<div class="calbutton3" onmousedown="shift();">
+<center>
+<span class="calbuttontext">shift</span>
+</center>
+</div>
+</td>
+<td>
+<div class="calbutton" onmousedown="pasteHtmlAtCaret('<span>&radic;(</span>',event);">
+<center>
+<span class="calbuttontext">&radic;</span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton"  onmousedown="pasteHtmlAtCaret('<span>&#8731;(</span>',event);">
+<center>
+<span class="calbuttontext">&#8731;</span>
+</center>
+</div>
+</td>
+<td>
+<div class="calbutton" onmousedown="pasteHtmlAtCaret('<span>abs(</span>',event);">
+<center>
+<span class="calbuttontext">abs</span>
+</center>
+</div>
+</td>
+
+<td>
+<div  class="calbutton"   onmousedown="pasteHtmlAtCaret('sin<sup>-1</sup>(',event);">
+<center>
+<span class="calbuttontext">sin<sup>-1</sup></span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton"   onmousedown="pasteHtmlAtCaret('cos<sup>-1</sup>(',event);">
+<center>
+<span class="calbuttontext">cos<sup>-1</sup></span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton"  onmousedown="pasteHtmlAtCaret('tan<sup>-1</sup>(',event);">
+<center>
+<span class="calbuttontext">tan<sup>-1</sup></span>
+</center>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div  class="calbutton"  onmousedown="pasteHtmlAtCaret('<span>5</span>',event);">
+<center>
+<span class="calbuttontext" >5</span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton"  onmousedown="pasteHtmlAtCaret('<span>6</span>',event);">
+<center>
+<span class="calbuttontext" >6</span>
+</center>
+</div>
+</td>
+<td>
+<div class="calbutton"  onmousedown="pasteHtmlAtCaret('<span>7</span>',event);">
+<center>
+<span class="calbuttontext" >7</span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton" onmousedown="pasteHtmlAtCaret('<span>8</span>',event);">
+<center>
+<span class="calbuttontext"  >8</span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton" onmousedown="pasteHtmlAtCaret('<span>9</span>',event);">
+<center>
+<span class="calbuttontext"  >9</span>
+</center>
+</div>
+</td>
+
+<td>
+<div  class="calbutton" onmousedown="pasteHtmlAtCaret('<span>'+ansext+'&times; </span>',event);">
+<center>
+<span class="calbuttontext" >&times;</span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton" onmousedown="pasteHtmlAtCaret('<span>'+ansext+'&divide; </span>',event);">
+<center>
+<span class="calbuttontext" >&divide;</span>
+</center>
+</div>
+</td>
+</tr>
+
+
+<tr>
+<td>
+<div class="calbutton" onmousedown="pasteHtmlAtCaret('<span>0</span>',event);">
+<center>
+<span class="calbuttontext" >0</span>
+</center>
+</div>
+</td>
+<td>
+<div class="calbutton"  onmousedown="pasteHtmlAtCaret('<span>1</span>',event);">
+<center>
+<span class="calbuttontext" >1</span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton" onmousedown="pasteHtmlAtCaret('<span>2</span>',event);">
+<center>
+<span class="calbuttontext" >2</span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton" onmousedown="pasteHtmlAtCaret('<span>3</span>',event);">
+<center>
+<span class="calbuttontext">3</span>
+</center>
+</div>
+</td>
+<td>
+<div class="calbutton" onmousedown="pasteHtmlAtCaret('<span>4</span>',event);">
+<center>
+<span class="calbuttontext" >4</span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton"  onmousedown="pasteHtmlAtCaret('<span>'+ansext+'+ </span>',event);">
+<center>
+<span class="calbuttontext">+</span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton"  onmousedown="pasteHtmlAtCaret('<span>'+ansext+'- </span>',event);">
+<center>
+<span class="calbuttontext">-</span>
+</center>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div  class="calbutton"  onmousedown="pasteHtmlAtCaret('<span>.</span>',event);">
+<center>
+<span class="calbuttontext">.</span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton" onmousedown="pasteHtmlAtCaret('<span>&pi;</span>',event);">
+<center>
+<span class="calbuttontext" style="font-family: times new roman"  >&pi;</span>
+</center>
+</div>
+</td>
+<td>
+<div class="calbutton" onmousedown="pasteHtmlAtCaret('<span>/</span>',event);">
+<center>
+<span class="calbuttontext" ><sup>&square;</sup>&#x0337;<sub>&square;</sub></span>
+</center>
+</div>
+</td>
+<td>
+<div class="calbutton" onmousedown="pasteHtmlAtCaret('<span>%</span>',event);">
+<center>
+<span class="calbuttontext" >%</span>
+</center>
+</div>
+</td>
+<td >
+<div  class="calbutton" onmousedown="pasteHtmlAtCaret(ansext.trim()+'&times;10<sup name=\'pwn\'>&nbsp;</sup>&nbsp;',event);  disp=document.getElementById('cdisplay'); SetCaretPosition(disp,  disp.innerText.length-1)">
+<center>
+<span class="calbuttontext">&times;10<sup>n</sup></span>
+</center>
+</div>
+</td>
+
+<td>
+<div class="calbutton"  onmousedown="pasteHtmlAtCaret('<span>(</span>',event);">
+<center>
+<span class="calbuttontext">(</span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton" onmousedown="pasteHtmlAtCaret('<span>)</span>',event);">
+<center>
+<span class="calbuttontext" >)</span>
+</center>
+</div>
+</td>
+</tr>
+
+<tr>
+<td>
+<div  class="calbutton3" onclick="goleft();">
+<center>
+<span class="calbuttontext" >&#8592;</span>
+</center>
+</td>
+<td>
+<div  class="calbutton3" onclick="goright();">
+<center>
+<span class="calbuttontext" >&#8594;</span>
+</center>
+</td>
+<td>
+<div  class="calbutton3" onclick="historyback();">
+<center>
+<span class="calbuttontext" >&#8593;</span>
+</center>
+</td>
+<td>
+<div  class="calbutton3" onclick="historyforward();">
+<center>
+<span class="calbuttontext" >&#8595;</span>
+</center>
+</td>
+<td>
+<div  class="calbutton3" onclick="convert();">
+<center>
+<span class="calbuttontext" >D&#8660;F</span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton" onmousedown="pasteHtmlAtCaret('<span>Ans </span>',event);">
+<center>
+<span class="calbuttontext"  >Ans</span>
+</center>
+</div>
+</td>
+<td>
+<div  class="calbutton" onclick="pre_calculation();">
+<center>
+<span class="calbuttontext" >=</span>
+</center>
+</div>
+</td>
+</tr>
+</table>
+</div>
+
+
+<div id="xdisplay"  class="calculatortext" style="position:relative; left:-5000px; top: 100px; height:35px; min-width:100px; width:auto; display:inline-block; background-color:yellow; border: 3px solid black; border-radius:10px;" >
+
+
+</div>
+<div id="superscripts" style="position:fixed; top:0px; left:-5000px;">
+&#8304;&sup1;&sup2;&sup3;&#8308;&#8309;&#8310;&#8311;&#8312;&#8313;&#8314;&#8315;&#8317;&#8318;&#5151;
+</div>
+<div id="specialchars2" style="position:fixed; top:0px; left:-5000px;">
+&#8304;&sup1;&sup2;&sup3;&#8308;&#8309;&#8310;&#8311;&#8312;&#8313;&#8318;0123456789)>
+</div>
+
+
+</body>
+</html>
+

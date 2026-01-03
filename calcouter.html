@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>BabaCalc Scientific Calculator</title>
+<meta charset='utf-8' />
+<meta name="description" content="Javascript calculator with calculation history, math functions, and scientific notation.">
+<meta name="keywords" content="calculator, calc, calculate, calculator, scientific calculator, scientific notation calculator, javascript calculator, java script calculator, freeware calculator, free calculator, online calculator, calculater">
+<link rel="shortcut icon" href="images/calc.ico" type="image/x-icon">
+<meta name=viewport content="width=device-width, initial-scale=1">
+
+<!--
+
+   *  babacalc.html v2.1.1
+   *  Copyright (c) 2025 Chris Tomlinson<chris@babaviva.net>
+   *  MIT Licence
+   *  Includes decimal.js by Michael Mclaughlin <M8ch88l@gmail.com>
+   *  https://github.com/MikeMcl/decimal.js
+   *  MIT Licence
+-->
+<style>
+.babaheader {
+  background: -webkit-linear-gradient(rgb(177,246,244), rgb(57,126,124)); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(rgb(177,246,244), rgb(57,126,124)); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(rgb(177,246,244), rgb(57,126,124)); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(rgb(177,246,244),rgb(57,126,124)); /* Standard syntax */
+  background-color: rgb(177,246,244);
+}
+</style>
+<script>
+function showcalculator()
+{
+   var mycalc= document.getElementById('calcouter');
+   mycalc.style.visibility="visible";
+
+   var mycalframe= document.getElementById('calframe');
+   mycalframe.contentWindow.dofocus();
+}
+function hidecalculator()
+{
+   var mycalc= document.getElementById('calcouter');
+   mycalc.style.visibility="hidden";
+}
+function showinform()
+{
+   var mycalcinfo= document.getElementById('calcinfo');
+   mycalcinfo.style.visibility="visible";
+}
+function hideinform()
+{
+   var mycalcinfo= document.getElementById('calcinfo');
+   mycalcinfo.style.visibility="hidden";
+}
+function link()
+{
+ window.open("https://github.com/MikeMcl/decimal.js",'github');
+}
+</script>
+
+</head>
+<body onload="showcalculator();">
+
+
+<div style="position: fixed; left:330px; top:0px;">
+<img src="images/calc-icon.png" width="64px" height="64px" onclick="showcalculator();" title="click to show Calculator"/>
+</div>
+<div id="calcouter"  style="position: fixed; top:100px; left:100px; height:420px; width:278px; background-color:transparent; margin:0px; padding:0px; cursor:move; visibility: hidden; z-index:2701000;">
+<div id="calcheader" class=" babaheader" style="position: absolute; top:0px; left:0px; width:275px; height:20px; background-color:rgb(57,126,124); border:3px solid rgb(57,126,124) ;border-radius:5px; padding:0px;">
+</div>
+<img src ="images/close-icon.png" style="position:absolute; top:2px; right:0px; width:20px; height:20px; cursor:pointer;" title="click to hide calculator"  onclick="hidecalculator();" />
+<img src ="images/calcinfo.png" style="position:absolute; top:2px; left:0px; width:20px; height:20px; cursor:pointer;" onclick="showinform();" />
+<iframe id="calframe" src="babacalc.html" style="height:424px; width:282px; border:none; background-color:transparent; z-index:2001100; "></iframe>
+<div class="babaheader" style="position: absolute; left:0px; top:398px; height:26px; width:280px; cursor:default; background-color: rgb(57,126,124); z-index:2001200; box-sizing: border-box; border-bottom: 3px solid rgb(57,126,124); border-left: 3px solid rgb(57,126,124);border-right: 3px solid rgb(57,126,124);"></div>
+</div>
+<div id="calcinfo" class="babaheader" style="position:fixed; top: 200px; left: 400px; width: 400px; height:300px; padding: 10px; color:white; border-radius: 10px; visibility:hidden;  z-index:2801000;" >
+
+<span style="font-size:28px; font-family:arial; ">
+<center>
+<b>
+
+<i>BabaCalc</i>
+</span>
+<span style="font-size:18px; font-family:arial; ">
+
+<br><br> Copyright (c) Chris Tomlinson v2.1.1<br>
+MIT Licence<br>
+Includes decimal.js by Michael Mclaughlin<br>
+<span style="cursor: pointer; color:blue;" onclick="link();"><b><u>
+https://github.com/MikeMcl/decimal.js</u></b></span><br>
+MIT Licence<br>
+</b>
+</center>
+
+</span>
+<img src ="images/close-icon.png" style="position:absolute; top:2px; right:0px; width:20px; height:20px; cursor:pointer;" onclick="hideinform();" />
+
+</div>
+</body>
+</html>
